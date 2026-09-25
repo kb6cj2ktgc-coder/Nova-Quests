@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#090b20">
+  <title>Nova Quests</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
+<body class="home-page">
+
+  <div class="stars" id="stars"></div>
+
+  <main class="home">
+    <section class="logo-area">
+      <div class="nova-symbol">✦</div>
+
+      <h1>NOVA<br><span>QUESTS</span></h1>
+
+      <p class="tagline">
+        Every world hides a story.
+      </p>
+    </section>
+
+    <section class="home-buttons">
+      <button class="primary-button" onclick="startNewGame()">
+        START NEW QUEST
+      </button>
+
+      <button
+        class="secondary-button"
+        id="continueButton"
+        onclick="continueGame()"
+      >
+        CONTINUE
+      </button>
+
+      <button class="text-button" onclick="showAbout()">
+        About Nova Quests
+      </button>
+    </section>
+
+    <p class="version">Nova Quests • First Adventure Build</p>
+  </main>
+
+  <div class="modal hidden" id="aboutModal">
+    <div class="modal-card">
+      <button class="close-button" onclick="hideAbout()">×</button>
+
+      <div class="modal-icon">✦</div>
+
+      <h2>Nova Quests</h2>
+
+      <p>
+        Long ago, the Nova at the centre of the worlds shattered.
+      </p>
+
+      <p>
+        Its shards were scattered across mysterious lands.
+        Explore each world, complete its quest and recover the
+        missing Nova Shards.
+      </p>
+
+      <p>
+        Collect them all and discover what lies beyond the final portal.
+      </p>
+
+      <button class="primary-button" onclick="hideAbout()">
+        LET'S GO
+      </button>
+    </div>
+  </div>
+
+  <script>
+    function createStars() {
+      const holder = document.getElementById("stars");
+
+      for (let i = 0; i < 90; i++) {
+        const star = document.createElement("span");
+
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.animationDelay = Math.random() * 4 + "s";
+        star.style.animationDuration = (2 + Math.random() * 4) + "s";
+
+        holder.appendChild(star);
+      }
+    }
+
+    function startNewGame() {
+      const existing = localStorage.getItem("novaQuestsSave");
+
+      if (existing) {
+        const replace = confirm(
+          "Starting a new quest will replace your current Nova Quests save. Continue?"
+        );
+
+        if (!replace) return;
+      }
+
+      localStorage.removeItem("novaQuestsSave");
+      localStorage.setItem("novaNewGame", "true");
+
+      window.location.href = "game.html";
+    }
+
+    function continueGame() {
+      if (!localStorage.getItem("novaQuestsSave")) {
+        alert("You haven't started a quest yet!");
+        return;
+      }
+
+      localStorage.removeItem("novaNewGame");
+      window.location.href = "game.html";
+    }
+
+    function showAbout() {
+      document.getElementById("aboutModal").classList.remove("hidden");
+    }
+
+    function hideAbout() {
+      document.getElementById("aboutModal").classList.add("hidden");
+    }
+
+    function updateContinueButton() {
+      const button = document.getElementById("continueButton");
+
+      if (!localStorage.getItem("novaQuestsSave")) {
+        button.classList.add("disabled");
+      }
+    }
+
+    createStars();
+    updateContinueButton();
+  </script>
+
+</body>
+</html>
